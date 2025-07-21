@@ -136,4 +136,4 @@ def initConfig():
 
 if __name__ == '__main__':
     initConfig() #初始化配置
-    getMapTile("arcgis")
+    getMapTile("tianditu_vec")

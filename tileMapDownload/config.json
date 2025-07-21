@@ -1,15 +1,13 @@
 {
     "lefttop": [
-      115.00354214900005,
-      36.212661043000026
+      73.666667,53.950000
     ],
     "rightbottom": [
-      115.48254466900006,
-      35.991812839000026
+      135.083333,3.866667
     ],
     "startlevel": 1,
     "endlevel": 18,
-    "outfolder": "e:\\mapdata\\nanle\\arcgis",
+    "outfolder": "/Users/guchuanlong1/map-download/vec_w",
     "agents": [
       "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/534.14 (KHTML, like Gecko) Chrome/9.0.601.0 Safari/534.14"
     ],
