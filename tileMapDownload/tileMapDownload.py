@@ -1,10 +1,11 @@
+# coding: utf-8
+
 from urllib import request
 import urllib.request
 import mecatorUtil
 import os
 import random
 import math
-import configparser
 import json
 from tqdm import tqdm
 

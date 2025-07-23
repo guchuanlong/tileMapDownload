@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import math
 def lonLat2Mercator(lon, lat):
     xy = []

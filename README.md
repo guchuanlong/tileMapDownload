@@ -22,3 +22,18 @@
     5、如果添加路径则需要在 代码中添加相应的条件判断，目前有谷歌影像和谷歌矢量，天地图矢量和矢量标注
    
     6、最后调用 getMapTile()填入对应的参数选择下载
+
+
+
+## pip常用命令
+    查看global.index-url配置
+    pip config get global.index-url
+
+    设置global.index-url的国内镜像
+    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
+    安装依赖的python包
+    pip install -r requirements.txt
+
+    导出依赖的python包
+    pip list --format=freeze > requirements.txt
