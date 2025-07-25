@@ -82,7 +82,8 @@ def downLoad(outfolder):
                     imgUrl = mapUrl.replace("{z}", str(item["zoom"])).replace("{x}", str(x)).replace("{y}", str(y)).replace("{tk}",random.choice(GlobalConfig["tianditu-tk"]))
                     #print("imgUrl..........."+imgUrl)
                     saveImg(imgUrl, xDirPath, str(y))
-                    sleep(1)
+                    #每隔0.5秒下载一次
+                    sleep(0.5)
                     count = 0
         print(end='\r')
         print(".............%d等级下载完成..........."%(item["zoom"]))
@@ -144,8 +145,8 @@ def initConfig(configFile):
     MecatorConfig = getConfig("mecatortileinfo.json")
 
 if __name__ == '__main__':
-    initConfig("config-jiangsu.json") #初始化配置
+    initConfig("config-06-江苏.json") #初始化配置
     #下载cva地图
-    getMapTile("tianditu_cva","/export/icity/tzd-map-tdt/cva_w")
+    getMapTile("tianditu_cva", "/export/icity/tzd-map-tdt/cva_w")
     #下载vec地图
     getMapTile("tianditu_vec", "/export/icity/tzd-map-tdt/vec_w")
