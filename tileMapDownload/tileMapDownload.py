@@ -8,6 +8,8 @@ import random
 import math
 import json
 from tqdm import tqdm
+from time import sleep
+import UserAgentGenerator
 
 MecatorConfig =""
 GlobalConfig = ""
@@ -18,6 +20,8 @@ allLevels = []
 
 #三次回调就跳过
 count = 0
+
+ua_gen = UserAgentGenerator.UserAgentGenerator()
 
 
 #读取配置文件
@@ -54,11 +58,12 @@ def calculateRowAndCol():
     print("................一共%d张瓦片........."%allTotal)
 
 #下载
-def downLoad():
+def downLoad(outfolder):
     global count
     calculateRowAndCol()
 
-    rootPath = GlobalConfig["outfolder"]
+    #rootPath = GlobalConfig["outfolder"]
+    rootPath=outfolder
     if not os.path.exists(rootPath):
         os.mkdir(rootPath)
     for item in allLevels:
@@ -74,8 +79,10 @@ def downLoad():
             #y循环
             for y in range(item["startY"],item["endY"]+1):
                 if not os.path.exists(xDirPath+os.path.sep+str(y)+".png"):
-                    imgUrl = mapUrl.replace("{z}", str(item["zoom"])).replace("{x}", str(x)).replace("{y}", str(y))
+                    imgUrl = mapUrl.replace("{z}", str(item["zoom"])).replace("{x}", str(x)).replace("{y}", str(y)).replace("{tk}",random.choice(GlobalConfig["tianditu-tk"]))
+                    #print("imgUrl..........."+imgUrl)
                     saveImg(imgUrl, xDirPath, str(y))
+                    sleep(1)
                     count = 0
         print(end='\r')
         print(".............%d等级下载完成..........."%(item["zoom"]))
@@ -91,7 +98,8 @@ def saveImg(imgUrl,path,name):
         if(count>=3):
             return
         req = urllib.request.Request(imgUrl)
-        req.add_header('User-Agent', random.choice(GlobalConfig["agents"]))  # 换用随机的请求头
+        #req.add_header('User-Agent', random.choice(GlobalConfig["agents"]))  # 换用随机的请求头
+        req.add_header('User-Agent', ua_gen.random())  # 换用随机的请求头
         img = urllib.request.urlopen(req,timeout=60)
 
         f = open(path+os.path.sep+name+".png","ab")
@@ -104,7 +112,7 @@ def saveImg(imgUrl,path,name):
             saveImg(imgUrl, path, name)
 
 #获取地图地址
-def getMapTile(type):
+def getMapTile(type,outfolder):
     global mapUrl
     if(type == "google_ras"):
         mapUrl = GlobalConfig["googlemap"]["raster"]
@@ -121,13 +129,13 @@ def getMapTile(type):
         return
     print("................当前地图地址 %s ........."%mapUrl)
 
-    downLoad()
+    downLoad(outfolder)
 
-def initConfig():
+def initConfig(configFile):
     global GlobalConfig
     global MecatorConfig
    #加载config文件
-    GlobalConfig = getConfig("config.json")
+    GlobalConfig = getConfig(configFile)
 
     print("................下载地图等级为 %d等级--到--%d等级............" % (GlobalConfig["startlevel"], GlobalConfig["endlevel"]))
     print("................地图切片保存路径--%s " % GlobalConfig['outfolder'])
@@ -136,5 +144,8 @@ def initConfig():
     MecatorConfig = getConfig("mecatortileinfo.json")
 
 if __name__ == '__main__':
-    initConfig() #初始化配置
-    getMapTile("tianditu_vec")
+    initConfig("config-jiangsu.json") #初始化配置
+    #下载cva地图
+    getMapTile("tianditu_cva","/export/icity/tzd-map-tdt/cva_w")
+    #下载vec地图
+    getMapTile("tianditu_vec", "/export/icity/tzd-map-tdt/vec_w")
